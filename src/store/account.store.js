@@ -8,7 +8,7 @@ export const useAccount = create((set) => ({
   balanceNumber: 0,
 
   setAccount(account) {
-    set({ account, accountId: account.id, isWalletConnected: true });
+    set({ account, accountId: account.accountId, isWalletConnected: true });
   },
   setBalance(balance) {
     set({ balance, balanceNumber: +balance });

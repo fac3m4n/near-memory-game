@@ -1,13 +1,18 @@
-import React, { useEffect, useCallback, useState } from "react";
-import { Container, Nav } from "react-bootstrap";
-import { login, logout as destroy, accountBalance } from "./utils/near";
-import Wallet from "./components/wallet/wallet";
-// import { Notification } from "./components/utils/Notifications";
-// import Products from "./components/marketplace/Products";
-import HomePage from "./components/home-page/home-page";
-import "./App.css";
-import useAccount from "./store/account";
+import { useEffect } from "react";
+
+// react-router
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+// components and pages
+import HomePage from "./components/home-page/home-page";
+import Wallet from "./components/wallet/wallet";
+import { Nav } from "react-bootstrap"; // bootstrap components
+
+// NEAR utils
+import { logout as destroy, accountBalance } from "./utils/near";
+
+// store
+import useAccount from "./store/account.store";
 
 const App = function AppWrapper() {
   const {
@@ -25,64 +30,37 @@ const App = function AppWrapper() {
       setAccount(acc);
       accountBalance().then((bal) => setBalance(bal));
     }
-  }, []);
+  }, []); /* eslint-disable-line */ /* fucking BS eslint error */
 
-  // const [balance, setBalance] = useState("0");
-  // const getBalance = useCallback(async () => {
-  //   if (account.accountId) {
-  //     setBalance(await accountBalance());
-  //   }
-  // }, [account.accountId]);
-
+  // uncomment this to see logs
   // useEffect(() => {
-  //   getBalance();
-  // }, [getBalance]);
+  //   console.log({ account, accountId, balance, isWalletConnected });
+  // });
 
   return (
-    // <>
-    //   {/* <Notification /> */}
-    //   {account.accountId ? (
-    //     <Container fluid="md">
-    //       <Nav className="justify-content-end pt-3 pb-5">
-    //         <Nav.Item>
-    //           <Wallet
-    //             address={account.accountId}
-    //             amount={balance}
-    //             symbol="NEAR"
-    //             destroy={destroy}
-    //           />
-    //         </Nav.Item>
-    //       </Nav>
-    //       <main>{/* <Products /> */}</main>
-    //     </Container>
-    //   ) : (
-    //     <Cover name="ZOO Memory" login={login} />
-    //   )}
-    // </>
     <BrowserRouter>
       {/* <Container fluid="md"> */}
-      {/* Navbar */}
+
       {isWalletConnected && (
         <Nav className="justify-content-end pt-3 pb-5">
           <Nav.Item>
-            {isWalletConnected && (
-              <Wallet
-                address={account?.accountId}
-                amount={balance}
-                symbol="NEAR"
-                destroy={destroy}
-              />
-            )}
+            <Wallet
+              address={accountId}
+              amount={balance}
+              symbol="NEAR"
+              destroy={destroy}
+            />
           </Nav.Item>
         </Nav>
       )}
 
       <main>
         <Routes>
-          <Route
-            path="/"
-            element={<HomePage name="ZOO Memory" login={login} />}
-          />
+          <Route path="/" element={<HomePage />} />
+
+          {/* Need to add game and product paths */}
+          <Route path="game" element={<></>} />
+          <Route path="products" element={<></>} />
         </Routes>
       </main>
       {/* </Container> */}

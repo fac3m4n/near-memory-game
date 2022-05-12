@@ -10,3 +10,14 @@
   background-repeat: no-repeat;
   background-position: center center;
 }
+
+.link {
+  color: white;
+  font-size: 2rem;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: white;
+  transform: scale(1.1, 1.1);
+}

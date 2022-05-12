@@ -1,0 +1,12 @@
+@font-face {
+  font-family: CHAWP;
+  src: url("../../fonts/chawp/chawp.otf") format("opentype");
+}
+
+.coverbg {
+  font-family: "CHAWP";
+  background-image: url("../../assets/img/cover-bg.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}

@@ -13,6 +13,7 @@ import { logout as destroy, accountBalance } from "./utils/near";
 
 // store
 import useAccount from "./store/account.store";
+import GamePage from "./components/game-page/game-page";
 
 const App = function AppWrapper() {
   const {
@@ -59,7 +60,7 @@ const App = function AppWrapper() {
           <Route path="/" element={<HomePage />} />
 
           {/* Need to add game and product paths */}
-          <Route path="game" element={<></>} />
+          <Route path="game" element={<GamePage />} />
           <Route path="products" element={<></>} />
         </Routes>
       </main>

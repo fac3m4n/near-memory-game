@@ -1,12 +1,19 @@
-import React from "react";
 import PropTypes from "prop-types";
+
+// components and pages
 import { Button, Stack } from "react-bootstrap";
-import { login } from "../../utils/near";
-import classes from "./home-page.module.css";
-import { useAccount } from "../../store/account.store";
 import { Link } from "react-router-dom";
 
-const Cover = ({ name = "ZOO Memory" }) => {
+// NEAR utils
+import { login } from "../../utils/near";
+
+// styles
+import classes from "./home-page.module.css";
+
+// state
+import { useAccount } from "../../store/account.store";
+
+const HomePage = ({ name = "ZOO Memory" }) => {
   const { isWalletConnected } = useAccount();
 
   return (
@@ -46,12 +53,12 @@ const Cover = ({ name = "ZOO Memory" }) => {
   );
 };
 
-Cover.propTypes = {
+HomePage.propTypes = {
   name: PropTypes.string,
 };
 
-Cover.defaultProps = {
+HomePage.defaultProps = {
   name: "ZOO Memory",
 };
 
-export default Cover;
+export default HomePage;

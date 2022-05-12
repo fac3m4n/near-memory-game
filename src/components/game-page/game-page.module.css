@@ -1,0 +1,39 @@
+.gameBody {
+  font-family: "CHAWP";
+  margin: 0;
+  font-size: 1.5rem;
+  text-align: center;
+  background: url("../../assets/img/game_bg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: #fff;
+}
+
+.game {
+  max-width: 860px;
+  margin: 40px auto;
+}
+
+.game button {
+  background: none;
+  border: 2px solid #fff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.game button:hover {
+  background: #c23866;
+  color: #fff;
+}
+
+.cardGrid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 20px;
+}

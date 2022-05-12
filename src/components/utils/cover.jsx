@@ -1,17 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
-import './Cover.css'
+import classes from './cover.module.css'
 
 const Cover = ({ name, login }) => {
     if ((name, login)) {
         return (
             <div
-                className="d-flex justify-content-center flex-column text-center coverbg"
+                className={`d-flex justify-content-center flex-column text-center ${classes.coverbg}`}
                 style={{ minHeight: "100vh" }}
             >
                 <div className="mt-auto text-light mb-5">
-
                     <h1>{name}</h1>
                     <p>Please connect your wallet to play.</p>
                     <Button

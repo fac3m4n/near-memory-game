@@ -1,10 +1,10 @@
 import React, { useEffect, useCallback, useState } from "react";
 import { Container, Nav } from "react-bootstrap";
 import { login, logout as destroy, accountBalance } from "./utils/near";
-import Wallet from "./components/Wallet";
+import Wallet from "./components/wallet";
 // import { Notification } from "./components/utils/Notifications";
 // import Products from "./components/marketplace/Products";
-import Cover from "./components/utils/Cover";
+import Cover from "./components/utils/cover";
 import "./App.css";
 
 const App = function AppWrapper() {
@@ -14,7 +14,7 @@ const App = function AppWrapper() {
     if (account.accountId) {
       setBalance(await accountBalance());
     }
-  });
+  }, [account.accountId]);
 
   useEffect(() => {
     getBalance();

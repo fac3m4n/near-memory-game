@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import GameCard from "../game-card/game-card";
 import classes from "./game-page.module.css";
+import useAccount from "../../store/account.store";
 
 import { v4 } from "uuid";
+import { getPointsForLevel, getTimeForLevel } from "../../utils/game-rules";
+import useUpdateEffect from "../../hooks/use-update-effect";
+import { Navigate } from "react-router-dom";
 
 const cardImages = [
   { src: "/img/deer.png", matched: false },
@@ -14,13 +18,23 @@ const cardImages = [
 ];
 
 const GamePage = () => {
-  const [curLevel, setCurLevel] = useState(1);
-  const totalLevels = 10;
+  const TOTAL_LEVELS = 10;
+
+  const [pageLoading, setPageLoading] = useState(true);
+
+  const [curLevel, setCurLevel] = useState(0);
+  const [numberOfWins, setNumberOfWins] = useState(0);
+  const [remainingTime, setRemainingTime] = useState(0);
+  const [totalPoints, setTotalPoints] = useState(0);
+
   const [cards, setCards] = useState([]);
   const [turns, setTurns] = useState(0);
   const [choiceOne, setChoiceOne] = useState(null);
   const [choiceTwo, setChoiceTwo] = useState(null);
   const [disabled, setDisabled] = useState(false);
+
+  // get account details
+  const { accountId, isWalletConnected } = useAccount();
 
   //shuffle cards
   const shuffleCards = () => {
@@ -33,12 +47,65 @@ const GamePage = () => {
 
   // start new game auto
   useEffect(() => {
-    shuffleCards();
+    (async () => {
+      // perform async actions with smart contracts to get the level, number of times won, etc, will get them from localStorage for now
+      const curData = localStorage.getItem(accountId)
+        ? JSON.parse(localStorage.getItem(accountId))
+        : null;
 
-    setChoiceOne(null);
-    setChoiceTwo(null);
-    setTurns(0);
-  }, [curLevel]);
+      setCurLevel(curData?.level || 1);
+      setNumberOfWins(curData?.wins || 0);
+      setRemainingTime(getTimeForLevel(curData?.level));
+      setTotalPoints(curData?.points || 0);
+
+      shuffleCards();
+      setChoiceOne(null);
+      setChoiceTwo(null);
+      setTurns(0);
+
+      setPageLoading(false);
+    })();
+  }, []); /* eslint-disable-line */
+
+  // check for changes in cards to see if user has won the game
+  useEffect(() => {
+    // check if all cards are matched, to count it as a win
+    const hasWonGame = !cards.some((card) => !card.matched);
+
+    if (hasWonGame) {
+      // perform actions here to update wins and award points or whatever
+
+      setNumberOfWins((numWins) => numWins + 1);
+      shuffleCards();
+      setChoiceOne(null);
+      setChoiceTwo(null);
+      setRemainingTime(getTimeForLevel(curLevel));
+      setTurns(0);
+      setDisabled(false);
+    }
+  }, [cards, curLevel]);
+
+  // check if user has won 3 times, in which case move them up a level
+  useEffect(() => {
+    if (numberOfWins >= 3) {
+      // perform actions here to update points for user
+
+      const newLevel = curLevel + 1;
+      setCurLevel(newLevel);
+      setNumberOfWins(0);
+      setRemainingTime(getTimeForLevel(newLevel));
+      setTotalPoints((curPts) => curPts + getPointsForLevel(newLevel));
+    }
+  }, [numberOfWins, curLevel]);
+
+  // store data in localStorage (after initial renders are done)
+  useUpdateEffect(() => {
+    localStorage.setItem(accountId, {
+      level: curLevel,
+      wins: numberOfWins,
+      totalPoints: totalPoints,
+    });
+  }, [accountId, curLevel, numberOfWins, totalPoints]);
 
   // handle a choice
   const handleChoice = (card) => {
@@ -66,8 +133,6 @@ const GamePage = () => {
     }
   }, [choiceOne, choiceTwo]);
 
-  // console.log(cards)
-
   //reset choices & increase turn
   const resetTurn = () => {
     setChoiceOne(null);
@@ -76,11 +141,17 @@ const GamePage = () => {
     setDisabled(false);
   };
 
+  if (!isWalletConnected) {
+    return <Navigate to="/" />;
+  }
+
+  if (pageLoading) return <div>Hang on, fetching game info...</div>;
+
   return (
     <div className={classes.gameBody}>
       <div className={classes.game}>
         <h1>
-          Level {curLevel} of {totalLevels}
+          Level {curLevel} of {TOTAL_LEVELS}
         </h1>
 
         {/* <button onClick={shuffleCards}>New Game</button> */}

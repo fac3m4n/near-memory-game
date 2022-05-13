@@ -1,15 +1,19 @@
 import { useEffect } from "react";
 
 // react-router
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 // components and pages
 import HomePage from "./components/home-page/home-page";
 import Wallet from "./components/wallet/wallet";
-import { Nav } from "react-bootstrap"; // bootstrap components
+import { Container, Nav, Spinner } from "react-bootstrap"; // bootstrap components
 
 // NEAR utils
-import { logout as destroy, accountBalance } from "./utils/near";
+import {
+  logout as destroy,
+  accountBalance,
+  initializeContract,
+} from "./utils/near";
 
 // store
 import useAccount from "./store/account.store";
@@ -26,12 +30,16 @@ const App = function AppWrapper() {
   } = useAccount();
 
   useEffect(() => {
-    const acc = window.walletConnection.account();
-    setAccount(acc);
+    initializeContract()
+      .then(() => {
+        const acc = window.walletConnection.account();
+        setAccount(acc);
 
-    if (acc && acc.accountId) {
-      accountBalance().then((bal) => setBalance(bal));
-    }
+        if (acc && acc.accountId) {
+          accountBalance().then((bal) => setBalance(bal));
+        }
+      })
+      .catch((err) => console.log(err));
   }, []); /* eslint-disable-line */ /* fucking BS eslint error */
 
   // uncomment this to see logs
@@ -39,12 +47,15 @@ const App = function AppWrapper() {
   //   console.log({ account, accountId, balance, isWalletConnected });
   // });
 
-  if (accountLoading) return;
+  if (accountLoading)
+    return (
+      <Container>
+        <Spinner />
+      </Container>
+    );
 
   return (
-    <BrowserRouter>
-      {/* <Container fluid="md"> */}
-
+    <Container>
       {isWalletConnected && (
         <Nav className="justify-content-end pt-3 pb-5">
           <Nav.Item>
@@ -67,8 +78,7 @@ const App = function AppWrapper() {
           <Route path="products" element={<></>} />
         </Routes>
       </main>
-      {/* </Container> */}
-    </BrowserRouter>
+    </Container>
   );
 };
 

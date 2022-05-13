@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import GameCard from "../game-card/game-card";
 import classes from "./game-page.module.css";
 
+import { v4 } from "uuid";
+
 const cardImages = [
   { src: "/img/deer.png", matched: false },
   { src: "/img/elephant.png", matched: false },
@@ -12,6 +14,8 @@ const cardImages = [
 ];
 
 const GamePage = () => {
+  const [curLevel, setCurLevel] = useState(1);
+  const totalLevels = 10;
   const [cards, setCards] = useState([]);
   const [turns, setTurns] = useState(0);
   const [choiceOne, setChoiceOne] = useState(null);
@@ -22,13 +26,19 @@ const GamePage = () => {
   const shuffleCards = () => {
     const shuffledCards = [...cardImages, ...cardImages]
       .sort(() => Math.random() - 0.5)
-      .map((card) => ({ ...card, id: Math.random() }));
+      .map((card) => ({ ...card, id: v4() })); // use uuid for unique key
+
+    setCards(shuffledCards);
+  };
+
+  // start new game auto
+  useEffect(() => {
+    shuffleCards();
 
     setChoiceOne(null);
     setChoiceTwo(null);
-    setCards(shuffledCards);
     setTurns(0);
-  };
+  }, [curLevel]);
 
   // handle a choice
   const handleChoice = (card) => {
@@ -66,27 +76,32 @@ const GamePage = () => {
     setDisabled(false);
   };
 
-  // start new game auto
-  useEffect(() => {
-    shuffleCards();
-  }, []);
-
   return (
     <div className={classes.gameBody}>
       <div className={classes.game}>
-        <h1>Level 1</h1>
-        <button onClick={shuffleCards}>New Game</button>
+        <h1>
+          Level {curLevel} of {totalLevels}
+        </h1>
+
+        {/* <button onClick={shuffleCards}>New Game</button> */}
 
         <div className={classes.cardGrid}>
-          {cards.map((card) => (
-            <GameCard
-              key={card.id}
-              card={card}
-              handleChoice={handleChoice}
-              flipped={card === choiceOne || card === choiceTwo || card.matched}
-              disabled={disabled}
-            />
-          ))}
+          {cards.map((card) => {
+            const isCardFlipped =
+              card?.id === choiceOne?.id ||
+              card?.id === choiceTwo?.id ||
+              card?.matched;
+
+            return (
+              <GameCard
+                key={card.id}
+                card={card}
+                handleChoice={handleChoice}
+                flipped={isCardFlipped}
+                disabled={disabled || isCardFlipped}
+              />
+            );
+          })}
         </div>
         <p>Turns: {turns}</p>
       </div>

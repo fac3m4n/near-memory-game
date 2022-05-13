@@ -53,7 +53,7 @@ const GamePage = () => {
         ? JSON.parse(localStorage.getItem(accountId))
         : null;
 
-      setCurLevel(curData?.level || 1);
+      setCurLevel(curData?.level || 0);
       setNumberOfWins(curData?.wins || 0);
       setRemainingTime(getTimeForLevel(curData?.level));
       setTotalPoints(curData?.points || 0);
@@ -70,18 +70,20 @@ const GamePage = () => {
   // check for changes in cards to see if user has won the game
   useEffect(() => {
     // check if all cards are matched, to count it as a win
-    const hasWonGame = !cards.some((card) => !card.matched);
+    const hasWonGame = cards.length > 0 && !cards.some((card) => !card.matched);
 
     if (hasWonGame) {
       // perform actions here to update wins and award points or whatever
 
-      setNumberOfWins((numWins) => numWins + 1);
-      shuffleCards();
-      setChoiceOne(null);
-      setChoiceTwo(null);
-      setRemainingTime(getTimeForLevel(curLevel));
-      setTurns(0);
-      setDisabled(false);
+      setTimeout(() => {
+        setNumberOfWins((numWins) => numWins + 1);
+        shuffleCards();
+        setChoiceOne(null);
+        setChoiceTwo(null);
+        setRemainingTime(getTimeForLevel(curLevel));
+        setTurns(0);
+        setDisabled(false);
+      }, 3000);
     }
   }, [cards, curLevel]);
 
@@ -100,11 +102,16 @@ const GamePage = () => {
 
   // store data in localStorage (after initial renders are done)
   useUpdateEffect(() => {
-    localStorage.setItem(accountId, {
-      level: curLevel,
-      wins: numberOfWins,
-      totalPoints: totalPoints,
-    });
+    if (!accountId) return;
+
+    localStorage.setItem(
+      accountId,
+      JSON.stringify({
+        level: curLevel,
+        wins: numberOfWins,
+        totalPoints: totalPoints,
+      })
+    );
   }, [accountId, curLevel, numberOfWins, totalPoints]);
 
   // handle a choice

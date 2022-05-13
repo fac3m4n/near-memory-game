@@ -17,18 +17,19 @@ import GamePage from "./components/game-page/game-page";
 
 const App = function AppWrapper() {
   const {
-    account,
     accountId,
     balance,
     isWalletConnected,
     setAccount,
     setBalance,
+    accountLoading,
   } = useAccount();
 
   useEffect(() => {
     const acc = window.walletConnection.account();
+    setAccount(acc);
+
     if (acc && acc.accountId) {
-      setAccount(acc);
       accountBalance().then((bal) => setBalance(bal));
     }
   }, []); /* eslint-disable-line */ /* fucking BS eslint error */
@@ -37,6 +38,8 @@ const App = function AppWrapper() {
   // useEffect(() => {
   //   console.log({ account, accountId, balance, isWalletConnected });
   // });
+
+  if (accountLoading) return;
 
   return (
     <BrowserRouter>

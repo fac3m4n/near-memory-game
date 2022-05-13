@@ -7,6 +7,7 @@ import { v4 } from "uuid";
 import { getPointsForLevel, getTimeForLevel } from "../../utils/game-rules";
 import useUpdateEffect from "../../hooks/use-update-effect";
 import { Navigate } from "react-router-dom";
+import useInterval from "../../hooks/use-interval";
 
 const cardImages = [
   { src: "/img/deer.png", matched: false },
@@ -26,7 +27,7 @@ const GamePage = () => {
   const [numberOfWins, setNumberOfWins] = useState(0);
   const [remainingTime, setRemainingTime] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
-
+  const [userHasWon, setUserHasWon] = useState(false);
   const [cards, setCards] = useState([]);
   const [turns, setTurns] = useState(0);
   const [choiceOne, setChoiceOne] = useState(null);
@@ -45,7 +46,7 @@ const GamePage = () => {
     setCards(shuffledCards);
   };
 
-  // start new game auto
+  // initial mount, fetch data from smart contact (temporarily localStorage)
   useEffect(() => {
     (async () => {
       // perform async actions with smart contracts to get the level, number of times won, etc, will get them from localStorage for now
@@ -55,7 +56,7 @@ const GamePage = () => {
 
       setCurLevel(curData?.level || 0);
       setNumberOfWins(curData?.wins || 0);
-      setRemainingTime(getTimeForLevel(curData?.level));
+      setRemainingTime(getTimeForLevel(curData?.level || 0));
       setTotalPoints(curData?.points || 0);
 
       shuffleCards();
@@ -75,30 +76,33 @@ const GamePage = () => {
     if (hasWonGame) {
       // perform actions here to update wins and award points or whatever
 
-      setTimeout(() => {
-        setNumberOfWins((numWins) => numWins + 1);
-        shuffleCards();
-        setChoiceOne(null);
-        setChoiceTwo(null);
-        setRemainingTime(getTimeForLevel(curLevel));
-        setTurns(0);
-        setDisabled(false);
-      }, 3000);
+      setUserHasWon(true);
+      setDisabled(true);
+      setNumberOfWins((numWins) => numWins + 1);
+      // setTimeout(() => {
+      //   setNumberOfWins((numWins) => numWins + 1);
+      //   shuffleCards();
+      //   setChoiceOne(null);
+      //   setChoiceTwo(null);
+      //   setRemainingTime(getTimeForLevel(curLevel));
+      //   setTurns(0);
+      //   setDisabled(false);
+      // }, 3000);
     }
   }, [cards, curLevel]);
 
-  // check if user has won 3 times, in which case move them up a level
-  useEffect(() => {
-    if (numberOfWins >= 3) {
-      // perform actions here to update points for user
+  // // check if user has won 3 times, in which case move them up a level
+  // useEffect(() => {
+  //   if (numberOfWins >= 3) {
+  // // perform actions here to update points for user
 
-      const newLevel = curLevel + 1;
-      setCurLevel(newLevel);
-      setNumberOfWins(0);
-      setRemainingTime(getTimeForLevel(newLevel));
-      setTotalPoints((curPts) => curPts + getPointsForLevel(newLevel));
-    }
-  }, [numberOfWins, curLevel]);
+  // const newLevel = curLevel + 1;
+  // setCurLevel(newLevel);
+  // setNumberOfWins(0);
+  // setRemainingTime(getTimeForLevel(newLevel));
+  // setTotalPoints((curPts) => curPts + getPointsForLevel(newLevel));
+  //   }
+  // }, [numberOfWins, curLevel]);
 
   // store data in localStorage (after initial renders are done)
   useUpdateEffect(() => {
@@ -114,12 +118,7 @@ const GamePage = () => {
     );
   }, [accountId, curLevel, numberOfWins, totalPoints]);
 
-  // handle a choice
-  const handleChoice = (card) => {
-    choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
-  };
-
-  //compare 2 selected cards
+  // compare 2 selected cards
   useEffect(() => {
     if (choiceOne && choiceTwo) {
       setDisabled(true);
@@ -140,7 +139,23 @@ const GamePage = () => {
     }
   }, [choiceOne, choiceTwo]);
 
-  //reset choices & increase turn
+  // timer
+  useInterval(() => {
+    if (remainingTime <= 0 || userHasWon) {
+      setDisabled(true);
+      return;
+    }
+    console.log(remainingTime);
+
+    setRemainingTime(remainingTime - 1);
+  }, 1000); // delay in ms, 1s => 1000ms
+
+  // handle a choice
+  const handleChoice = (card) => {
+    choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
+  };
+
+  // reset choices & increase turn
   const resetTurn = () => {
     setChoiceOne(null);
     setChoiceTwo(null);
@@ -148,10 +163,29 @@ const GamePage = () => {
     setDisabled(false);
   };
 
-  if (!isWalletConnected) {
-    return <Navigate to="/" />;
-  }
+  const replayHandler = () => {
+    if (userHasWon && numberOfWins >= 3) {
+      // perform actions here to update points for user
 
+      const newLevel = curLevel + 1;
+      setCurLevel(newLevel);
+      setNumberOfWins(0);
+      setRemainingTime(getTimeForLevel(newLevel));
+      setTotalPoints((curPts) => curPts + getPointsForLevel(newLevel));
+    }
+
+    shuffleCards();
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setRemainingTime(getTimeForLevel(curLevel));
+    setTurns(0);
+    setUserHasWon(false);
+    setDisabled(false);
+  };
+
+  // if user has not connected wallet, redirect to home page
+  if (!isWalletConnected) return <Navigate to="/" />;
+  // while still fetching user and game details from smart contracts, show loader or something
   if (pageLoading) return <div>Hang on, fetching game info...</div>;
 
   return (
@@ -161,7 +195,15 @@ const GamePage = () => {
           Level {curLevel} of {TOTAL_LEVELS}
         </h1>
 
-        {/* <button onClick={shuffleCards}>New Game</button> */}
+        {(userHasWon || remainingTime <= 0) && (
+          <button onClick={replayHandler}>
+            {userHasWon
+              ? numberOfWins >= 3
+                ? "Next Level"
+                : "Replay"
+              : "Try Again"}
+          </button>
+        )}
 
         <div className={classes.cardGrid}>
           {cards.map((card) => {

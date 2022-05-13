@@ -1,0 +1,23 @@
+@font-face {
+  font-family: CHAWP;
+  src: url("../../fonts/chawp/chawp.otf") format("opentype");
+}
+
+.coverbg {
+  font-family: "CHAWP";
+  background-image: url("../../assets/img/cover-bg.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.link {
+  color: white;
+  font-size: 2rem;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: white;
+  transform: scale(1.1, 1.1);
+}

@@ -13,6 +13,7 @@
 .game {
   max-width: 860px;
   margin: 40px auto;
+  padding: 4rem;
 }
 
 .game button {

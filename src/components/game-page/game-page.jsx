@@ -8,6 +8,7 @@ import { getPointsForLevel, getTimeForLevel } from "../../utils/game-rules";
 import useUpdateEffect from "../../hooks/use-update-effect";
 import { Navigate } from "react-router-dom";
 import useInterval from "../../hooks/use-interval";
+import GameInfo from "../game-info/game-info";
 
 const cardImages = [
   { src: "/img/deer.png", matched: false },
@@ -49,7 +50,8 @@ const GamePage = () => {
   // initial mount, fetch data from smart contact (temporarily localStorage)
   useEffect(() => {
     (async () => {
-      // perform async actions with smart contracts to get the level, number of times won, etc, will get them from localStorage for now
+      // TODO: perform async actions with smart contracts to get the level, number of times won, etc, will get them from localStorage for now
+
       const curData = localStorage.getItem(accountId)
         ? JSON.parse(localStorage.getItem(accountId))
         : null;
@@ -74,35 +76,13 @@ const GamePage = () => {
     const hasWonGame = cards.length > 0 && !cards.some((card) => !card.matched);
 
     if (hasWonGame) {
-      // perform actions here to update wins and award points or whatever
+      // TODO: perform actions here to update wins and award points or whatever
 
       setUserHasWon(true);
       setDisabled(true);
       setNumberOfWins((numWins) => numWins + 1);
-      // setTimeout(() => {
-      //   setNumberOfWins((numWins) => numWins + 1);
-      //   shuffleCards();
-      //   setChoiceOne(null);
-      //   setChoiceTwo(null);
-      //   setRemainingTime(getTimeForLevel(curLevel));
-      //   setTurns(0);
-      //   setDisabled(false);
-      // }, 3000);
     }
   }, [cards, curLevel]);
-
-  // // check if user has won 3 times, in which case move them up a level
-  // useEffect(() => {
-  //   if (numberOfWins >= 3) {
-  // // perform actions here to update points for user
-
-  // const newLevel = curLevel + 1;
-  // setCurLevel(newLevel);
-  // setNumberOfWins(0);
-  // setRemainingTime(getTimeForLevel(newLevel));
-  // setTotalPoints((curPts) => curPts + getPointsForLevel(newLevel));
-  //   }
-  // }, [numberOfWins, curLevel]);
 
   // store data in localStorage (after initial renders are done)
   useUpdateEffect(() => {
@@ -113,7 +93,7 @@ const GamePage = () => {
       JSON.stringify({
         level: curLevel,
         wins: numberOfWins,
-        totalPoints: totalPoints,
+        points: totalPoints,
       })
     );
   }, [accountId, curLevel, numberOfWins, totalPoints]);
@@ -191,9 +171,13 @@ const GamePage = () => {
   return (
     <div className={classes.gameBody}>
       <div className={classes.game}>
-        <h1>
-          Level {curLevel} of {TOTAL_LEVELS}
-        </h1>
+        <GameInfo
+          remainingTime={remainingTime}
+          numberOfWins={numberOfWins}
+          curLevel={curLevel}
+          points={totalPoints}
+          totalLevels={TOTAL_LEVELS}
+        />
 
         {(userHasWon || remainingTime <= 0) && (
           <button onClick={replayHandler}>

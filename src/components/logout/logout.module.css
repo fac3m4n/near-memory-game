@@ -1,0 +1,18 @@
+.logout {
+  color: #888680;
+  font-size: 35px;
+
+  position: absolute;
+  top: 80px;
+  right: 90px;
+
+  z-index: 10000;
+}
+
+.logout button {
+  color: #f50058;
+  outline: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+}

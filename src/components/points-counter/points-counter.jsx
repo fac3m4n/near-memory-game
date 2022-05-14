@@ -3,7 +3,9 @@ import { convertToHours } from "../../utils/date-time";
 import classes from "./points-counter.module.css";
 
 const PointsCounter = ({ page = "home" }) => {
-  const { totalPoints, timeRemaining } = useAccount();
+  const { totalPoints, timeRemaining, isWalletConnected } = useAccount();
+
+  if (!isWalletConnected) return null;
 
   return (
     <div

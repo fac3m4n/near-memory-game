@@ -13,6 +13,7 @@ import classes from "./home-page.module.css";
 // state
 import { useAccount } from "../../store/account.store";
 import PointsCounter from "../points-counter/points-counter";
+import Logout from "../logout/logout";
 
 const HomePage = ({ name = "ZOO Memory" }) => {
   const { isWalletConnected } = useAccount();
@@ -20,6 +21,7 @@ const HomePage = ({ name = "ZOO Memory" }) => {
   return (
     <div className={`${classes.coverbg}`}>
       <PointsCounter page="home" />
+      <Logout />
       <div
         className={`d-flex justify-content-center flex-column text-center ${classes.coverbgContent}`}
       >

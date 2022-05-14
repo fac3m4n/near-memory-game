@@ -1,13 +1,19 @@
 .pointsCounter {
   position: absolute;
-  top: 40px;
-  left: 40px;
+  /* top: 40px;
+  left: 40px; */
+
+  top: 5%;
+  left: 5%;
 
   font-size: 35px;
 }
 
 .game {
   color: #fff;
-  top: 160px;
-  left: 120px;
+  /* top: 160px;
+  left: 120px; */
+
+  top: 20%;
+  left: 8%;
 }

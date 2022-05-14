@@ -19,7 +19,7 @@ import {
 import useAccount from "./store/account.store";
 import GamePage from "./components/game-page/game-page";
 
-const App = function AppWrapper() {
+const App = () => {
   const {
     accountId,
     balance,

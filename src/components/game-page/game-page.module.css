@@ -1,5 +1,5 @@
 .gameBody {
-  font-family: "CHAWP";
+  /* font-family: "CHAWP";
   margin: 0;
   font-size: 1.5rem;
   text-align: center;
@@ -7,13 +7,46 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  color: #fff; */
+
+  font-family: CHAWP;
+  margin: 0;
+  font-size: 1.5rem;
+  text-align: center;
+  width: 100%;
+  /* min-width: 920px; */
+  padding-top: 64.65%;
+  max-height: 100%;
+  position: relative;
+  background: url("../../assets/img/game_bg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
   color: #fff;
 }
 
+@media screen and (max-width: 900px) {
+  .gameBody {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .gameBody {
+    font-size: 0.8rem;
+  }
+}
+
 .game {
-  max-width: 860px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  /* max-width: 860px; */
   margin: 40px auto;
-  padding: 4rem;
+  padding: 0 4em;
 }
 
 .game button {
@@ -35,6 +68,8 @@
 .cardGrid {
   margin-top: 40px;
   display: grid;
+  margin: auto;
+  width: 55%;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 20px;
 }

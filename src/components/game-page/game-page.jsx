@@ -9,6 +9,7 @@ import useUpdateEffect from "../../hooks/use-update-effect";
 import { Navigate } from "react-router-dom";
 import useInterval from "../../hooks/use-interval";
 import GameInfo from "../game-info/game-info";
+import PointsCounter from "../points-counter/points-counter";
 
 const cardImages = [
   { src: "/img/deer.png", matched: false },
@@ -170,6 +171,7 @@ const GamePage = () => {
 
   return (
     <div className={classes.gameBody}>
+      <PointsCounter page="game" />
       <div className={classes.game}>
         <GameInfo
           remainingTime={remainingTime}

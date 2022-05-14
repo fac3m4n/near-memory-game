@@ -12,16 +12,14 @@ import classes from "./home-page.module.css";
 
 // state
 import { useAccount } from "../../store/account.store";
+import PointsCounter from "../points-counter/points-counter";
 
 const HomePage = ({ name = "ZOO Memory" }) => {
   const { isWalletConnected } = useAccount();
 
   return (
-    <div
-      className={`${classes.coverbg}`}
-      // style={{ minHeight: "100vh" }}
-      style={{ width: "100%" }}
-    >
+    <div className={`${classes.coverbg}`}>
+      <PointsCounter page="home" />
       <div
         className={`d-flex justify-content-center flex-column text-center ${classes.coverbgContent}`}
       >

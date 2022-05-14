@@ -4,7 +4,11 @@ import classes from "./game-page.module.css";
 import useAccount from "../../store/account.store";
 
 import { v4 } from "uuid";
-import { getPointsForLevel, getTimeForLevel } from "../../utils/game-rules";
+import {
+  getPointsForLevel,
+  getTimeForLevel,
+  shuffleArray,
+} from "../../utils/game-rules";
 import useUpdateEffect from "../../hooks/use-update-effect";
 import { Navigate } from "react-router-dom";
 import useInterval from "../../hooks/use-interval";
@@ -20,21 +24,23 @@ import PointsCounter from "../points-counter/points-counter";
 //   { src: "/img/gorilla.png", matched: false },
 // ];
 
-const cardImages = Array(18)
-  .fill(0)
-  .map((_, idx) => ({
-    src: `/img/new-animals/${idx + 1}.png`,
-    matched: false,
-  }));
-
 const GamePage = () => {
   const TOTAL_LEVELS = 10;
+  const CUTOFF_LEVEL = 5;
 
   const {
     totalPoints,
     setPoints,
     setTimeRemaining: setRemainingPointsTime,
   } = useAccount();
+
+  // import the list of cards from public dir
+  const cardImages = Array(18)
+    .fill(0)
+    .map((_, idx) => ({
+      src: `/img/new-animals/${idx + 1}.png`,
+      matched: false,
+    }));
 
   const [pageLoading, setPageLoading] = useState(true);
 
@@ -54,9 +60,18 @@ const GamePage = () => {
 
   //shuffle cards
   const shuffleCards = () => {
-    const shuffledCards = [...cardImages, ...cardImages]
-      .sort(() => Math.random() - 0.5)
-      .map((card) => ({ ...card, id: v4() })); // use uuid for unique key
+    // const shuffledCards = [...cardImages, ...cardImages]
+    //   .sort(() => Math.random() - 0.5)
+    //   .map((card) => ({ ...card, id: v4() })); // use uuid for unique key
+
+    const animalList = shuffleArray(cardImages).slice(
+      0,
+      curLevel >= CUTOFF_LEVEL ? 8 : 6
+    );
+
+    const shuffledCards = shuffleArray([...animalList, ...animalList]).map(
+      (card) => ({ ...card, id: v4() })
+    ); // use uuid for unique key
 
     setCards(shuffledCards);
   };

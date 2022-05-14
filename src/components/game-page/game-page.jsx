@@ -121,9 +121,6 @@ const GamePage = () => {
 
       setUserHasWon(true);
       setDisabled(true);
-      // if (numberOfWins + 1 >= 3) {
-      //   setPoints(getPointsForLevel(curLevel)); // TODO: smart contract logic for points for level
-      // }
       setNumberOfWins((numWins) => numWins + 1);
     }
   }, [cards, curLevel]);
@@ -167,7 +164,7 @@ const GamePage = () => {
     if (numberOfWins >= 3) {
       if (totalPoints === 0) setRemainingPointsTime(24 * 60 * 60); // TODO: store current time as start time for points expiry
 
-      setPoints(getPointsForLevel(curLevel)); // TODO: smart contract logic for points for level
+      setPoints(totalPoints + getPointsForLevel(curLevel)); // TODO: smart contract logic for points for level
     }
   }, [numberOfWins, curLevel, setPoints]);
 

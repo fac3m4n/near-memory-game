@@ -13,7 +13,8 @@ export const GameCard = ({ card, handleChoice, flipped, disabled }) => {
         <img className="front" src={card.src} alt="cardfront" />
         <img
           className="back"
-          src="/img/cover.png"
+          // src="/img/cover.png"
+          src="/img/new-animals/new-cover.png"
           alt="card back"
           onClick={handleClick}
         />

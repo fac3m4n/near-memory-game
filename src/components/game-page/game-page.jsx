@@ -23,12 +23,18 @@ const cardImages = [
 const GamePage = () => {
   const TOTAL_LEVELS = 10;
 
+  const {
+    totalPoints,
+    setPoints,
+    setTimeRemaining: setRemainingPointsTime,
+  } = useAccount();
+
   const [pageLoading, setPageLoading] = useState(true);
 
   const [curLevel, setCurLevel] = useState(0);
   const [numberOfWins, setNumberOfWins] = useState(0);
   const [remainingTime, setRemainingTime] = useState(0);
-  const [totalPoints, setTotalPoints] = useState(0);
+  // const [totalPoints, setTotalPoints] = useState(0);
   const [userHasWon, setUserHasWon] = useState(false);
   const [cards, setCards] = useState([]);
   const [turns, setTurns] = useState(0);
@@ -52,15 +58,27 @@ const GamePage = () => {
   useEffect(() => {
     (async () => {
       // TODO: perform async actions with smart contracts to get the level, number of times won, etc, will get them from localStorage for now
-
       const curData = localStorage.getItem(accountId)
         ? JSON.parse(localStorage.getItem(accountId))
         : null;
 
-      setCurLevel(curData?.level || 0);
-      setNumberOfWins(curData?.wins || 0);
-      setRemainingTime(getTimeForLevel(curData?.level || 0));
-      setTotalPoints(curData?.points || 0);
+      if (curData?.wins && curData?.wins >= 3) {
+        let newLevel = 0;
+        if (
+          typeof curData?.level === "number" &&
+          curData?.level < TOTAL_LEVELS
+        ) {
+          newLevel = curData?.level + 1;
+        }
+
+        setCurLevel(newLevel);
+        setNumberOfWins(0);
+        setRemainingTime(getTimeForLevel(newLevel)); // TODO: smart contract API to get time for level
+      } else {
+        setCurLevel(curData?.level || 0);
+        setNumberOfWins(curData?.wins || 0);
+        setRemainingTime(getTimeForLevel(curData?.level || 0)); // TODO: smart contract API to get time for level
+      }
 
       shuffleCards();
       setChoiceOne(null);
@@ -72,7 +90,7 @@ const GamePage = () => {
   }, []); /* eslint-disable-line */
 
   // check for changes in cards to see if user has won the game
-  useEffect(() => {
+  useUpdateEffect(() => {
     // check if all cards are matched, to count it as a win
     const hasWonGame = cards.length > 0 && !cards.some((card) => !card.matched);
 
@@ -81,6 +99,9 @@ const GamePage = () => {
 
       setUserHasWon(true);
       setDisabled(true);
+      // if (numberOfWins + 1 >= 3) {
+      //   setPoints(getPointsForLevel(curLevel)); // TODO: smart contract logic for points for level
+      // }
       setNumberOfWins((numWins) => numWins + 1);
     }
   }, [cards, curLevel]);
@@ -100,7 +121,7 @@ const GamePage = () => {
   }, [accountId, curLevel, numberOfWins, totalPoints]);
 
   // compare 2 selected cards
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (choiceOne && choiceTwo) {
       setDisabled(true);
       if (choiceOne.src === choiceTwo.src) {
@@ -120,13 +141,22 @@ const GamePage = () => {
     }
   }, [choiceOne, choiceTwo]);
 
+  useUpdateEffect(() => {
+    if (numberOfWins >= 3) {
+      if (totalPoints === 0) setRemainingPointsTime(24 * 60 * 60); // TODO: store current time as start time for points expiry
+
+      setPoints(getPointsForLevel(curLevel)); // TODO: smart contract logic for points for level
+    }
+  }, [numberOfWins, curLevel, setPoints]);
+
   // timer
   useInterval(() => {
+    if (pageLoading) return;
+
     if (remainingTime <= 0 || userHasWon) {
       setDisabled(true);
       return;
     }
-    console.log(remainingTime);
 
     setRemainingTime(remainingTime - 1);
   }, 1000); // delay in ms, 1s => 1000ms
@@ -152,7 +182,7 @@ const GamePage = () => {
       setCurLevel(newLevel);
       setNumberOfWins(0);
       setRemainingTime(getTimeForLevel(newLevel));
-      setTotalPoints((curPts) => curPts + getPointsForLevel(newLevel));
+      // setTotalPoints((curPts) => curPts + getPointsForLevel(newLevel));
     }
 
     shuffleCards();

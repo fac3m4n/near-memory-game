@@ -11,14 +11,21 @@ import useInterval from "../../hooks/use-interval";
 import GameInfo from "../game-info/game-info";
 import PointsCounter from "../points-counter/points-counter";
 
-const cardImages = [
-  { src: "/img/deer.png", matched: false },
-  { src: "/img/elephant.png", matched: false },
-  { src: "/img/panda.png", matched: false },
-  { src: "/img/tiger.png", matched: false },
-  { src: "/img/zebra.png", matched: false },
-  { src: "/img/gorilla.png", matched: false },
-];
+// const cardImages = [
+//   { src: "/img/deer.png", matched: false },
+//   { src: "/img/elephant.png", matched: false },
+//   { src: "/img/panda.png", matched: false },
+//   { src: "/img/tiger.png", matched: false },
+//   { src: "/img/zebra.png", matched: false },
+//   { src: "/img/gorilla.png", matched: false },
+// ];
+
+const cardImages = Array(18)
+  .fill(0)
+  .map((_, idx) => ({
+    src: `/img/new-animals/${idx + 1}.png`,
+    matched: false,
+  }));
 
 const GamePage = () => {
   const TOTAL_LEVELS = 10;

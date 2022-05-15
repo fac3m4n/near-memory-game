@@ -31,7 +31,7 @@ const HomePage = ({ name = "ZOO Memory" }) => {
               <Link to="game" className={classes.link}>
                 START GAME
               </Link>
-              <Link to="products" className={classes.link}>
+              <Link to="collection" className={classes.link}>
                 COLLECTION
               </Link>
               <Link to="/" className={classes.link}>

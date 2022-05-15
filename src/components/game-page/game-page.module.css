@@ -58,6 +58,20 @@
   font-size: 1em;
 }
 
+.game h2 {
+  margin-top: 0.5em;
+}
+
+@media screen and (max-width: 1280px) {
+  .game h2 {
+    margin-top: 0.25em;
+  }
+  .game p,
+  .game button {
+    margin-top: 0.25em;
+  }
+}
+
 .game button:hover {
   background: #c23866;
   color: #fff;

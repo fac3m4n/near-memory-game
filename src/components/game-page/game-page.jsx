@@ -17,6 +17,7 @@ import PointsCounter from "../points-counter/points-counter";
 import Logout from "../logout/logout";
 import GameWins from "../game-wins/game-wins";
 import { Container, Spinner } from "react-bootstrap";
+import BackLink from "../back-link/back-link";
 
 // const cardImages = [
 //   { src: "/img/deer.png", matched: false },
@@ -229,13 +230,14 @@ const GamePage = () => {
 
   return (
     <div className={classes.gameBody}>
-      <PointsCounter page="game" />
+      <BackLink />
       <Logout color="#fff" />
+      <PointsCounter page="game" />
       <GameWins numberOfWins={numberOfWins} />
       <div className={classes.game}>
-        <h1>
+        <h2>
           Level {curLevel} of {TOTAL_LEVELS}
-        </h1>
+        </h2>
         <p>
           <span style={{ fontSize: "2rem" }}>{remainingTime}</span>
           <span>s</span>

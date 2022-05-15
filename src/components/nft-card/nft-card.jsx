@@ -12,7 +12,11 @@ const NftCard = ({
 }) => {
   bgNum = bgNum % 12; // if more than 12 items are added, ensure that there is a valid bg for it
 
-  return <div className={`${classes.nftCard} ${classes[`bg${bgNum}`]}`}></div>;
+  return (
+    <div className={`${classes.nftCard} ${classes[`bg${bgNum}`]}`}>
+      <img src={image} alt="nft" />
+    </div>
+  );
 };
 
 export default NftCard;

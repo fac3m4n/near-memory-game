@@ -26,9 +26,10 @@
 
 .cardGrid {
   display: grid;
-  width: 80%;
+  width: 75%;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 1em;
+  /* gap: 1em; */
+  margin: 0 auto;
 }
 
 @media screen and (min-width: 1400px) {

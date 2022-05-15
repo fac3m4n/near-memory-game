@@ -1,0 +1,89 @@
+.nftCard {
+  font-family: CHAWP;
+  margin: 0;
+  /* font-size: 1.5rem; */
+  text-align: center;
+  width: 100%;
+  /* height: 500px; */
+  padding-top: 100%;
+  /* max-height: 100%; */
+  position: relative;
+  /* background: url("../../assets/img/game_bg.png"); */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  /* color: #fff; */
+}
+
+.bg0 {
+  background: url("../../assets/img/collection-bgs/0.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.bg1 {
+  background: url("../../assets/img/collection-bgs/1.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.bg2 {
+  background: url("../../assets/img/collection-bgs/2.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.bg3 {
+  background: url("../../assets/img/collection-bgs/3.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.bg4 {
+  background: url("../../assets/img/collection-bgs/4.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.bg5 {
+  background: url("../../assets/img/collection-bgs/5.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.bg6 {
+  background: url("../../assets/img/collection-bgs/6.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.bg7 {
+  background: url("../../assets/img/collection-bgs/7.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.bg8 {
+  background: url("../../assets/img/collection-bgs/8.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.bg9 {
+  background: url("../../assets/img/collection-bgs/9.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.bg10 {
+  background: url("../../assets/img/collection-bgs/10.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.bg11 {
+  background: url("../../assets/img/collection-bgs/11.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}

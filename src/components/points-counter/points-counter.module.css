@@ -1,0 +1,29 @@
+.pointsCounter {
+  position: absolute;
+  /* top: 40px;
+  left: 40px; */
+
+  top: 5%;
+  left: 5%;
+
+  font-size: 2rem;
+}
+
+.game {
+  color: #fff;
+  /* top: 160px;
+  left: 120px; */
+
+  top: 20%;
+  left: 8%;
+}
+
+.imgContainer {
+  width: 3rem;
+  height: 4rem;
+  position: relative;
+  margin-right: 0.5rem;
+}
+
+/* @media screen and (max-width: 900) {
+} */

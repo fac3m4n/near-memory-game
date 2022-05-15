@@ -4,11 +4,23 @@
 }
 
 .coverbg {
-  font-family: "CHAWP";
+  font-family: CHAWP;
+  width: 100%;
+  padding-top: 70%;
+  max-height: 100%;
+  position: relative;
   background-image: url("../../assets/img/cover-bg.jpg");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
+}
+
+.coverbgContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 
 .link {

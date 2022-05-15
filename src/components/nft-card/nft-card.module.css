@@ -19,9 +19,38 @@
   position: absolute;
   width: 40%;
   height: 50%;
-  top: 60%;
+  top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.btn {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5em;
+
+  border: none;
+  outline: none;
+  background: none;
+}
+
+.btn.mint {
+  color: #f50058;
+}
+.btn.stake {
+  color: #28a334;
+}
+
+.btn::after {
+  content: "";
+  position: absolute;
+  border: 2px solid;
+  width: 40%;
+  bottom: -3px;
+  left: 3px;
+  transform: rotate(-10deg);
 }
 
 .bg0 {

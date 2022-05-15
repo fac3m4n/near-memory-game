@@ -1,7 +1,12 @@
+import { useEffect, useState } from "react";
 import classes from "./collection-page.module.css";
 
 import { v4 } from "uuid";
+
 import NftCard from "../nft-card/nft-card";
+
+import useAccount from "../../store/account.store";
+import { Container, Spinner } from "react-bootstrap";
 
 /*
   export type NftModel = {
@@ -15,6 +20,7 @@ import NftCard from "../nft-card/nft-card";
 }
 */
 
+// TODO: replace dummy data with backend stuff
 const collectionItems = [
   {
     id: v4(),
@@ -127,12 +133,51 @@ const collectionItems = [
 ];
 
 const CollectionPage = () => {
+  const { account, accountId } = useAccount();
+
+  const [loading, setLoading] = useState(true);
+  const [nftCards, setNftCards] = useState(collectionItems); // TODO: replace with empty inital array (when adding API calls)
+
+  useEffect(() => {
+    // TODO: call API and get list of NFTs for user (run setNftCards once you're done with the fetching, followed by setLoading(false))
+
+    // set loading to false after done (either wrap in async await, or do then chaining)
+    setLoading(false);
+  }, []);
+
+  const onMintNft = async (nftId) => {
+    // TODO: call API/invoke SC to mint the NFT (account object and accountId are already available above)
+    console.log({ account, accountId, nftId });
+
+    // TODO: @lanxion to add state logic after API calls are done
+  };
+  const onStakeNft = async (nftId) => {
+    // TODO: call API/invoke SC to stake the NFT (account object and accountId are already available above)
+    console.log({ account, accountId, nftId });
+
+    // TODO: @lanxion to add state logic after API calls are done
+  };
+
+  // wait for async fetching to finish
+  if (loading)
+    return (
+      <Container>
+        <Spinner />
+      </Container>
+    );
+
   return (
     <div className={classes.collectionContainer}>
       <div className={classes.collectionContent}>
         <div className={classes.cardGrid}>
-          {collectionItems.map((nft, idx) => (
-            <NftCard key={nft.id} {...nft} bgNum={idx} />
+          {nftCards.map((nft, idx) => (
+            <NftCard
+              key={nft.id}
+              {...nft}
+              bgNum={idx}
+              onMint={onMintNft}
+              onStake={onStakeNft}
+            />
           ))}
         </div>
       </div>

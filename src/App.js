@@ -19,6 +19,7 @@ import {
 import useAccount from "./store/account.store";
 import GamePage from "./components/game-page/game-page";
 import useInterval from "./hooks/use-interval";
+import CollectionPage from "./components/collection-page/collection-page";
 
 const App = () => {
   const {
@@ -91,9 +92,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="game" element={<GamePage />} />
-
-          {/* Need to add product paths */}
-          <Route path="products" element={<></>} />
+          <Route path="collection" element={<CollectionPage />} />
         </Routes>
       </main>
     </div>
@@ -101,30 +100,3 @@ const App = () => {
 };
 
 export default App;
-
-/* eslint-disable-next-line */
-{
-  /* {isWalletConnected && (
-        <Wallet
-          address={accountId}
-          amount={balance}
-          symbol="NEAR"
-          destroy={destroy}
-        />
-      )} */
-}
-/* eslint-disable-next-line */
-{
-  /* {isWalletConnected && (
-  <Nav className="justify-content-end pt-3 pb-5">
-    <Nav.Item>
-      <Wallet
-        address={accountId}
-        amount={balance}
-        symbol="NEAR"
-        destroy={destroy}
-      />
-    </Nav.Item>
-  </Nav>
-)} */
-}

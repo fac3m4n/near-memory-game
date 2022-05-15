@@ -31,7 +31,7 @@ const HomePage = ({ name = "ZOO Memory" }) => {
               <Link to="game" className={classes.link}>
                 START GAME
               </Link>
-              <Link to="products" className={classes.link}>
+              <Link to="collection" className={classes.link}>
                 COLLECTION
               </Link>
               <Link to="/" className={classes.link}>
@@ -40,7 +40,7 @@ const HomePage = ({ name = "ZOO Memory" }) => {
             </Stack>
           ) : (
             <>
-              <h1>{name}</h1>
+              <h1 style={{ marginTop: "5rem" }}>{name}</h1>
               <p>Please connect your wallet to play.</p>
               <Button
                 onClick={login}

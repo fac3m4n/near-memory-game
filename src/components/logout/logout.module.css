@@ -1,12 +1,12 @@
 .logout {
   color: #888680;
-  font-size: 2rem;
+  font-size: 1.5rem;
 
   position: absolute;
   top: 80px;
   right: 90px;
 
-  z-index: 10000;
+  z-index: 10;
 }
 
 .logout button {

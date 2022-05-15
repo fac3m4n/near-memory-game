@@ -14,14 +14,11 @@ const GameInfo = ({
         Level {curLevel} of {totalLevels}
       </h1>
       <div className={classes.info}>
-        <Link to="/">{"<"} Back</Link>
-        <span>{remainingTime}</span>
+        {/* <Link to="/">{"<"} Back</Link> */}
+
+        {/* <span>{remainingTime}</span> */}
 
         <div>
-          <div>
-            <span>Points: {points}</span>
-          </div>
-
           <div className={classes.numWins}>
             <span className={numberOfWins >= 1 && classes.win}>1</span>
             <span className={numberOfWins >= 2 && classes.win}>2</span>

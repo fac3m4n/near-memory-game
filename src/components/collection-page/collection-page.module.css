@@ -1,0 +1,45 @@
+.collectionContainer {
+  font-family: CHAWP;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+  padding-top: 60%;
+  max-height: 100%;
+  position: relative;
+  background: url("../../assets/img/collection_bg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  color: #fff;
+}
+
+.collectionContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  margin: 2em auto;
+  padding: 0 3em;
+}
+
+.cardGrid {
+  display: grid;
+  width: 75%;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  /* gap: 1em; */
+  margin: 0 auto;
+}
+
+@media screen and (min-width: 1400px) {
+  .collectionContent {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .collectionContent {
+    font-size: 20px;
+  }
+}

@@ -1,14 +1,4 @@
 .gameBody {
-  /* font-family: "CHAWP";
-  margin: 0;
-  font-size: 1.5rem;
-  text-align: center;
-  background: url("../../assets/img/game_bg.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  color: #fff; */
-
   font-family: CHAWP;
   margin: 0;
   font-size: 1.5rem;
@@ -72,10 +62,11 @@
   width: 55%;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   /* grid-gap: 20px; */
-  grid-gap: 1.25rem;
+  gap: 1.25rem;
 }
 
-.cardGrid.row-5 {
+.cardGrid.row5 {
   width: 65%;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 1rem;
 }

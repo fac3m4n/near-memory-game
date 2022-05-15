@@ -59,14 +59,14 @@ const GamePage = () => {
   const { accountId, isWalletConnected } = useAccount();
 
   //shuffle cards
-  const shuffleCards = () => {
+  const shuffleCards = (lvl = 0) => {
     // const shuffledCards = [...cardImages, ...cardImages]
     //   .sort(() => Math.random() - 0.5)
     //   .map((card) => ({ ...card, id: v4() })); // use uuid for unique key
 
     const animalList = shuffleArray(cardImages).slice(
       0,
-      curLevel >= CUTOFF_LEVEL ? 8 : 6
+      lvl >= CUTOFF_LEVEL ? 10 : 6
     );
 
     const shuffledCards = shuffleArray([...animalList, ...animalList]).map(
@@ -96,13 +96,14 @@ const GamePage = () => {
         setCurLevel(newLevel);
         setNumberOfWins(0);
         setRemainingTime(getTimeForLevel(newLevel)); // TODO: smart contract API to get time for level
+        shuffleCards(newLevel);
       } else {
         setCurLevel(curData?.level || 0);
         setNumberOfWins(curData?.wins || 0);
         setRemainingTime(getTimeForLevel(curData?.level || 0)); // TODO: smart contract API to get time for level
+        shuffleCards(curData?.level || 0);
       }
 
-      shuffleCards();
       setChoiceOne(null);
       setChoiceTwo(null);
       setTurns(0);
@@ -201,10 +202,10 @@ const GamePage = () => {
       setCurLevel(newLevel);
       setNumberOfWins(0);
       setRemainingTime(getTimeForLevel(newLevel));
+      shuffleCards(newLevel);
       // setTotalPoints((curPts) => curPts + getPointsForLevel(newLevel));
     }
 
-    shuffleCards();
     setChoiceOne(null);
     setChoiceTwo(null);
     setRemainingTime(getTimeForLevel(curLevel));
@@ -240,7 +241,11 @@ const GamePage = () => {
           </button>
         )}
 
-        <div className={classes.cardGrid}>
+        <div
+          className={`${classes.cardGrid} ${
+            curLevel >= CUTOFF_LEVEL ? classes.row5 : ""
+          }`}
+        >
           {cards.map((card) => {
             const isCardFlipped =
               card?.id === choiceOne?.id ||

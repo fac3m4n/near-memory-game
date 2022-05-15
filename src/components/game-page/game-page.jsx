@@ -12,8 +12,11 @@ import {
 import useUpdateEffect from "../../hooks/use-update-effect";
 import { Navigate } from "react-router-dom";
 import useInterval from "../../hooks/use-interval";
-import GameInfo from "../game-info/game-info";
+// import GameInfo from "../game-info/game-info";
 import PointsCounter from "../points-counter/points-counter";
+import Logout from "../logout/logout";
+import GameWins from "../game-wins/game-wins";
+import { Container, Spinner } from "react-bootstrap";
 
 // const cardImages = [
 //   { src: "/img/deer.png", matched: false },
@@ -217,21 +220,28 @@ const GamePage = () => {
   // if user has not connected wallet, redirect to home page
   if (!isWalletConnected) return <Navigate to="/" />;
   // while still fetching user and game details from smart contracts, show loader or something
-  if (pageLoading) return <div>Hang on, fetching game info...</div>;
+  if (pageLoading)
+    return (
+      <Container>
+        <Spinner />
+      </Container>
+    );
 
   return (
     <div className={classes.gameBody}>
       <PointsCounter page="game" />
+      <Logout color="#fff" />
+      <GameWins numberOfWins={numberOfWins} />
       <div className={classes.game}>
-        <GameInfo
-          remainingTime={remainingTime}
-          numberOfWins={numberOfWins}
-          curLevel={curLevel}
-          points={totalPoints}
-          totalLevels={TOTAL_LEVELS}
-        />
+        <h1>
+          Level {curLevel} of {TOTAL_LEVELS}
+        </h1>
+        <p>
+          <span style={{ fontSize: "2rem" }}>{remainingTime}</span>
+          <span>s</span>
+        </p>
 
-        {(userHasWon || remainingTime <= 0) && (
+        {/* {(userHasWon || remainingTime <= 0) && (
           <button onClick={replayHandler}>
             {userHasWon
               ? numberOfWins >= 3
@@ -239,7 +249,7 @@ const GamePage = () => {
                 : "Replay"
               : "Try Again"}
           </button>
-        )}
+        )} */}
 
         <div
           className={`${classes.cardGrid} ${
@@ -263,7 +273,17 @@ const GamePage = () => {
             );
           })}
         </div>
-        <p>Turns: {turns}</p>
+        {userHasWon || remainingTime <= 0 ? (
+          <button onClick={replayHandler}>
+            {userHasWon
+              ? numberOfWins >= 3
+                ? "Next Level"
+                : "Replay"
+              : "Try Again"}
+          </button>
+        ) : (
+          <p>Turns: {turns}</p>
+        )}
       </div>
     </div>
   );

@@ -15,12 +15,13 @@ const PointsCounter = ({ page = "home" }) => {
     >
       <div className="d-flex flex-row">
         <div
-          style={{
-            width: "47px",
-            height: "66px",
-            position: "relative",
-            marginRight: "9px",
-          }}
+          className={classes.imgContainer}
+          // style={{
+          //   width: "47px",
+          //   height: "66px",
+          //   position: "relative",
+          //   marginRight: "9px",
+          // }}
         >
           <img
             src="/img/point-diamond.png"

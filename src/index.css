@@ -36,3 +36,21 @@ code {
   position: relative;
   width: 100%;
 }
+
+@media screen and (max-width: 900px) {
+  :root {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  :root {
+    font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  :root {
+    font-size: 8px;
+  }
+}
